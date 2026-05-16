@@ -19,11 +19,6 @@ export default function Topbar({ activePage, navigate, onMenuToggle, onNotif, on
       </button>
       <div className="topbar-title">{PAGE_LABELS[activePage] || 'Dashboard'}</div>
 
-      <div className="search-box">
-        <i className="ti ti-search si" />
-        <input placeholder="Search students, classes..." />
-      </div>
-
       <button className="icon-btn" onClick={onNotif} title="Notifications">
         <i className="ti ti-bell" />
         <div className="notif-dot" />
