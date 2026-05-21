@@ -3,23 +3,22 @@ import { DEMO_ACCOUNTS } from '../data/data'
 import { useAuth } from '../context/AuthContext'
 
 const ROLES_LIST = [
-  { key: 'admin',   icon: '🏫', label: 'Admin'   },
-  { key: 'teacher', icon: '👨‍🏫', label: 'Teacher' },
-  { key: 'student', icon: '👨‍🎓', label: 'Student' },
-  { key: 'parent',  icon: '👪', label: 'Parent'  },
+  { key: 'admin',    icon: '🏢', label: 'Admin'    },
+  { key: 'manager',  icon: '💼', label: 'Manager'  },
+  { key: 'employee', icon: '👤', label: 'Employee' },
+  { key: 'client',   icon: '🤝', label: 'Client'   },
 ]
 
 export default function Auth() {
   const { login } = useAuth()
   const [tab, setTab] = useState('login')
   const [selectedRole, setSelectedRole] = useState('admin')
-  const [email, setEmail] = useState('admin@school.edu')
+  const [email, setEmail] = useState('admin@worknexus.io')
   const [pass, setPass]   = useState('123456')
   const [error, setError] = useState('')
 
-  // Signup state
-  const [suFn, setSuFn]     = useState('')
-  const [suLn, setSuLn]     = useState('')
+  const [suFn, setSuFn]       = useState('')
+  const [suLn, setSuLn]       = useState('')
   const [suEmail, setSuEmail] = useState('')
   const [suRole, setSuRole]   = useState('admin')
   const [suPass, setSuPass]   = useState('')
@@ -52,10 +51,10 @@ export default function Auth() {
     <div className="auth-screen">
       <div className="auth-card">
         <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:28 }}>
-          <div className="logo-icon" style={{ width:46, height:46, fontSize:20 }}>S</div>
+          <div className="logo-icon" style={{ width:46, height:46, fontSize:20 }}>W</div>
           <div>
-            <div style={{ fontWeight:800, fontSize:20, color:'var(--text)' }}>SchoolSphere</div>
-            <div style={{ fontSize:12, color:'var(--text3)' }}>Management System</div>
+            <div style={{ fontWeight:800, fontSize:20, color:'var(--text)' }}>WorkNexus</div>
+            <div style={{ fontSize:12, color:'var(--text3)' }}>HR Management Platform</div>
           </div>
         </div>
 
@@ -68,7 +67,7 @@ export default function Auth() {
           <div>
             <div className="form-group">
               <label>Email Address</label>
-              <input className="form-control" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="admin@school.edu" />
+              <input className="form-control" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="admin@worknexus.io" />
             </div>
             <div className="form-group">
               <label>Password</label>
@@ -97,17 +96,17 @@ export default function Auth() {
         ) : (
           <div>
             <div className="form-row">
-              <div className="form-group"><label>First Name</label><input className="form-control" value={suFn} onChange={e => setSuFn(e.target.value)} placeholder="John" /></div>
-              <div className="form-group"><label>Last Name</label><input className="form-control" value={suLn} onChange={e => setSuLn(e.target.value)} placeholder="Smith" /></div>
+              <div className="form-group"><label>First Name</label><input className="form-control" value={suFn} onChange={e => setSuFn(e.target.value)} placeholder="Alex" /></div>
+              <div className="form-group"><label>Last Name</label><input className="form-control" value={suLn} onChange={e => setSuLn(e.target.value)} placeholder="Morgan" /></div>
             </div>
-            <div className="form-group"><label>Email Address</label><input className="form-control" type="email" value={suEmail} onChange={e => setSuEmail(e.target.value)} placeholder="john@school.edu" /></div>
+            <div className="form-group"><label>Email Address</label><input className="form-control" type="email" value={suEmail} onChange={e => setSuEmail(e.target.value)} placeholder="alex@worknexus.io" /></div>
             <div className="form-group">
               <label>Role</label>
               <select className="form-control" value={suRole} onChange={e => setSuRole(e.target.value)}>
                 <option value="admin">Administrator</option>
-                <option value="teacher">Teacher</option>
-                <option value="student">Student</option>
-                <option value="parent">Parent</option>
+                <option value="manager">Manager</option>
+                <option value="employee">Employee</option>
+                <option value="client">Client</option>
               </select>
             </div>
             <div className="form-row">

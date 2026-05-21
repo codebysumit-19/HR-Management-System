@@ -1,30 +1,57 @@
 import { useAuth } from '../context/AuthContext'
-import { STUDENTS, EVENTS, ROLES } from '../data/data'
-import { initials, acBg, statusBadge, AvatarCircle } from '../components/helpers'
+import { EMPLOYEES, EVENTS, ROLES, MANAGERS, TEAMS, TASKS } from '../data/data'
+import { statusBadge, AvatarCircle } from '../components/helpers'
 
-const ROLE_STATS = {
-  admin:   [{ v:'1,247', l:'Total Students', icon:'ti-users', bg:'#ede9ff', c:'var(--purple)', chg:'↑ 3.2%', up:true },{ v:'89', l:'Teachers', icon:'ti-school', bg:'var(--teal-light)', c:'var(--teal)', chg:'↑ 4 new', up:true },{ v:'48', l:'Classes', icon:'ti-building', bg:'var(--blue-light)', c:'var(--blue)' },{ v:'92.4%', l:'Attendance', icon:'ti-calendar-check', bg:'var(--green-light)', c:'var(--green)', chg:'↑ 1.2%', up:true }],
-  teacher: [{ v:'120', l:'My Students', icon:'ti-users', bg:'#ede9ff', c:'var(--purple)' },{ v:'5', l:'Classes', icon:'ti-building', bg:'var(--blue-light)', c:'var(--blue)' },{ v:'8', l:'Assignments', icon:'ti-clipboard-list', bg:'var(--amber-light)', c:'var(--amber)' },{ v:'94%', l:'Attendance', icon:'ti-calendar-check', bg:'var(--green-light)', c:'var(--green)' }],
-  student: [{ v:'7', l:'My Subjects', icon:'ti-books', bg:'#ede9ff', c:'var(--purple)' },{ v:'3', l:'Pending Tasks', icon:'ti-clipboard-list', bg:'var(--amber-light)', c:'var(--amber)' },{ v:'95%', l:'My Attendance', icon:'ti-calendar-check', bg:'var(--green-light)', c:'var(--green)' },{ v:'A-', l:'Avg Grade', icon:'ti-trophy', bg:'var(--teal-light)', c:'var(--teal)' }],
-  parent:  [{ v:'2', l:'My Children', icon:'ti-heart', bg:'#ede9ff', c:'var(--purple)' },{ v:'92%', l:'Attendance', icon:'ti-calendar-check', bg:'var(--green-light)', c:'var(--green)' },{ v:'B+', l:'Avg Grade', icon:'ti-trophy', bg:'var(--teal-light)', c:'var(--teal)' },{ v:'1', l:'Pending Fees', icon:'ti-receipt', bg:'var(--red-light)', c:'var(--red)' }],
-}
-
-const ATT_MONTHS = ['Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May']
-const ATT_DATA   = [88,91,87,93,85,90,92,89,91,93]
+const PERF = [['Engineering',88],['Product',76],['Marketing',82],['Operations',70],['Design',91]]
 
 const SCHEDULE = [
-  { t:'08:00', title:'Mathematics — Class 8A', dot:'var(--purple)' },
-  { t:'09:30', title:'Science — Class 7B',     dot:'var(--teal)'   },
-  { t:'11:00', title:'Staff Meeting',           dot:'var(--amber)'  },
-  { t:'13:00', title:'English — Class 6A',      dot:'var(--purple)' },
-  { t:'14:30', title:'Parent Meeting',          dot:'var(--coral)'  },
+  { t:'09:00', title:'Sprint Planning — Alpha Squad', dot:'var(--purple)' },
+  { t:'10:30', title:'Product Roadmap Review',         dot:'var(--teal)'   },
+  { t:'12:00', title:'Lunch & Team Sync',              dot:'var(--amber)'  },
+  { t:'14:00', title:'Client Strategy Call',           dot:'var(--coral)'  },
+  { t:'16:00', title:'HR All Hands Meeting',           dot:'var(--blue)'   },
 ]
 
-const PERF = [['Math',82],['Science',76],['English',90],['History',68],['Arts',84]]
+const ATT_MONTHS = ['Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May']
+const ATT_DATA   = [91,88,85,93,87,90,94,89,92,95]
 
 export default function Dashboard({ navigate }) {
   const { user } = useAuth()
   const role = user?.role || 'admin'
+
+  // Dynamic stats computed from real data
+  const totalEmp   = EMPLOYEES.length
+  const activeEmp  = EMPLOYEES.filter(e => e.status === 'Active').length
+  const onLeave    = EMPLOYEES.filter(e => e.status === 'On Leave').length
+  const openTasks  = TASKS.filter(t => t.status === 'Open').length
+
+  const ROLE_STATS = {
+    admin:    [
+      { v: String(totalEmp),   l:'Total Employees', icon:'ti-users',          bg:'#ede9ff',           c:'var(--purple)', chg:'↑ 4 this month', up:true },
+      { v: String(MANAGERS.length), l:'Managers',   icon:'ti-briefcase',      bg:'var(--teal-light)', c:'var(--teal)',   chg:'↑ 1 new',        up:true },
+      { v: String(TEAMS.length),    l:'Active Teams',icon:'ti-building',      bg:'var(--blue-light)', c:'var(--blue)'   },
+      { v: String(openTasks),  l:'Open Tasks',      icon:'ti-clipboard-list', bg:'var(--amber-light)',c:'var(--amber)'  },
+    ],
+    manager:  [
+      { v: String(activeEmp),  l:'My Team Members', icon:'ti-users',         bg:'#ede9ff',           c:'var(--purple)' },
+      { v: String(TEAMS.length),l:'Teams',          icon:'ti-building',      bg:'var(--blue-light)', c:'var(--blue)'   },
+      { v: String(openTasks),  l:'Open Tasks',      icon:'ti-clipboard-list',bg:'var(--amber-light)',c:'var(--amber)'  },
+      { v:'94%',               l:'Attendance Rate', icon:'ti-calendar-check',bg:'var(--green-light)',c:'var(--green)'  },
+    ],
+    employee: [
+      { v:'3',  l:'My Projects',   icon:'ti-folder',        bg:'#ede9ff',           c:'var(--purple)' },
+      { v:'2',  l:'Pending Tasks', icon:'ti-clipboard-list',bg:'var(--amber-light)',c:'var(--amber)'  },
+      { v:'97%',l:'My Attendance', icon:'ti-calendar-check',bg:'var(--green-light)',c:'var(--green)'  },
+      { v:'A-', l:'Appraisal',     icon:'ti-trophy',        bg:'var(--teal-light)', c:'var(--teal)'   },
+    ],
+    client:   [
+      { v:'2',  l:'My Contacts',   icon:'ti-users',         bg:'#ede9ff',           c:'var(--purple)' },
+      { v:'95%',l:'SLA Met',       icon:'ti-calendar-check',bg:'var(--green-light)',c:'var(--green)'  },
+      { v:'B+', l:'Project Rating',icon:'ti-trophy',        bg:'var(--teal-light)', c:'var(--teal)'   },
+      { v:'1',  l:'Pending Reviews',icon:'ti-file-pencil',  bg:'var(--amber-light)',c:'var(--amber)'  },
+    ],
+  }
+
   const stats = ROLE_STATS[role] || ROLE_STATS.admin
 
   return (
@@ -32,10 +59,10 @@ export default function Dashboard({ navigate }) {
       <div className="page-header">
         <div className="breadcrumb">Home / <span>Dashboard</span></div>
         <h1>Welcome back, {user?.firstName} 👋</h1>
-        <p>Here's what's happening at your school today.</p>
+        <p>Here's what's happening at WorkNexus today.</p>
       </div>
 
-      {/* Stats */}
+      {/* Dynamic Stats */}
       <div className="stats-grid">
         {stats.map((s, i) => (
           <div className="stat-card" key={i}>
@@ -53,12 +80,13 @@ export default function Dashboard({ navigate }) {
 
       <div className="dash-layout">
         <div className="dash-left">
+
           {/* Attendance Chart */}
           <div className="card">
             <div className="card-header">
               <div className="card-title">Monthly Attendance Overview</div>
               <select className="form-control" style={{ maxWidth:130, padding:'5px 8px', fontSize:12 }}>
-                <option>This Month</option><option>Last Month</option><option>Last 3 Months</option>
+                <option>This Month</option><option>Last Month</option><option>Last Quarter</option>
               </select>
             </div>
             <div style={{ display:'flex', alignItems:'flex-end', gap:6, height:130, padding:'8px 0' }}>
@@ -82,17 +110,17 @@ export default function Dashboard({ navigate }) {
             </div>
           </div>
 
-          {/* Recent Students */}
+          {/* Recent Employees */}
           <div className="card">
             <div className="card-header">
-              <div className="card-title">Recent Students</div>
-              <span className="card-link" onClick={() => navigate('students')}>View All →</span>
+              <div className="card-title">Recent Employees</div>
+              <span className="card-link" onClick={() => navigate('employees')}>View All →</span>
             </div>
             <div className="table-wrap">
               <table>
-                <thead><tr><th>Student</th><th>Class</th><th>Grade</th><th>Status</th></tr></thead>
+                <thead><tr><th>Employee</th><th>Team</th><th>Rating</th><th>Status</th></tr></thead>
                 <tbody>
-                  {STUDENTS.slice(0, 5).map((s, i) => (
+                  {EMPLOYEES.slice(0, 5).map((s, i) => (
                     <tr key={s.id}>
                       <td>
                         <div style={{ display:'flex', alignItems:'center', gap:10 }}>
@@ -103,7 +131,7 @@ export default function Dashboard({ navigate }) {
                           </div>
                         </div>
                       </td>
-                      <td>{s.cls}</td>
+                      <td>{s.team}</td>
                       <td><span style={{ fontWeight:700, color:'var(--teal)' }}>{s.grade}</span></td>
                       <td>{statusBadge(s.status)}</td>
                     </tr>
@@ -134,14 +162,14 @@ export default function Dashboard({ navigate }) {
               ))}
             </div>
 
-            {/* Performance */}
+            {/* Department Performance */}
             <div className="card">
-              <div className="card-header"><div className="card-title">Performance</div></div>
+              <div className="card-header"><div className="card-title">Dept. Performance</div></div>
               <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
-                {PERF.map(([sub, score]) => (
-                  <div key={sub}>
+                {PERF.map(([dept, score]) => (
+                  <div key={dept}>
                     <div style={{ display:'flex', justifyContent:'space-between', fontSize:12, marginBottom:3 }}>
-                      <span style={{ color:'var(--text2)' }}>{sub}</span>
+                      <span style={{ color:'var(--text2)' }}>{dept}</span>
                       <span style={{ fontWeight:700, color:'var(--text)' }}>{score}%</span>
                     </div>
                     <div className="progress-bar">
@@ -184,7 +212,7 @@ export default function Dashboard({ navigate }) {
 
 function MiniCalendar() {
   const days = ['Su','Mo','Tu','We','Th','Fr','Sa']
-  const today = 10
+  const today = 15
   const eventDays = [5,12,15,20,25,30]
   return (
     <div className="cal-grid">

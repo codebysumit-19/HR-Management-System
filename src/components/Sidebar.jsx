@@ -9,10 +9,10 @@ export default function Sidebar({ activePage, navigate, sidebarOpen, onLogout })
   return (
     <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
       <div className="sidebar-logo">
-        <div className="logo-icon">S</div>
+        <div className="logo-icon">W</div>
         <div>
-          <div className="logo-text">SchoolSphere</div>
-          <div className="logo-sub">Management System</div>
+          <div className="logo-text">WorkNexus</div>
+          <div className="logo-sub">HR Management</div>
         </div>
       </div>
 
