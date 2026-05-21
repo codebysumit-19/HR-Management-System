@@ -1,4 +1,4 @@
-# 🏫 SchoolSphere — School Management System
+# HR Management System
 
 A complete, modern school management system built with React + Vite + TailwindCSS.
 
