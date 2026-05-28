@@ -1,4 +1,4 @@
-# WorkNexus — HR Management System
+# HR Management System
 
 A complete, modern HR management platform built with React + Vite + TailwindCSS.
 
